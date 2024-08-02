@@ -41,7 +41,7 @@ jobs:
           SSH_HOST: ${{ vars.SSH_HOST }}
           DEPLOY_DIR: ${{ vars.DEPLOY_DIR }}
         run: |
-          scp -r ./build/ $SSH_USER@$SSH_HOST:$DEPLOY_DIR
+          scp -r -i ~/.ssh/github-actions ./build/* $SSH_USER@$SSH_HOST:$DEPLOY_DIR
 
       - name: Cleanup
         run: rm -rf ~/.ssh
