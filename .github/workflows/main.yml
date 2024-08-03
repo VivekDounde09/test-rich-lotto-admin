@@ -33,7 +33,7 @@ jobs:
           mkdir -p ~/.ssh
           echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan -H $SSH_HOST > ~/.ssh/known_hosts
+          ssh-keyscan -H $SSH_HOST >> ~/.ssh/known_hosts
 
       - name: Deploy frontend
         env:
@@ -41,7 +41,8 @@ jobs:
           SSH_HOST: ${{ vars.SSH_HOST }}
           DEPLOY_DIR: ${{ vars.DEPLOY_DIR }}
         run: |
-          scp -r -i ~/.ssh/id_rsa ./pre-build/ $SSH_USER@$SSH_HOST:$DEPLOY_DIR
+          echo "Deploying to $SSH_USER@$SSH_HOST:$DEPLOY_DIR"
+          scp -vvv -r -i ~/.ssh/id_rsa ./build/* $SSH_USER@$SSH_HOST:$DEPLOY_DIR
 
       - name: Cleanup
         run: rm -rf ~/.ssh
